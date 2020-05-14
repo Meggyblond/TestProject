@@ -1,10 +1,10 @@
 pool:
-	name: Azure Pipelines
-	demands: npm
-	vmImage: 'ubuntu-latest'
+    name: Azure Pipelines
+    demands: npm
+    vmImage: 'ubuntu-latest'
 
 variables:
-	CI: true
+    CI: true
 
 steps:
 - task: Npm@1
