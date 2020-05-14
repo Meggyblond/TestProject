@@ -1,0 +1,42 @@
+pool:
+	name: Azure Pipelines
+	demands: npm
+	vmImage: 'ubuntu-latest'
+
+variables:
+	CI: true
+
+steps:
+- task: Npm@1
+displayName: 'Install npm'
+inputs:
+	workingDir: 'Vefur/testproject-react-app'
+	verbose: false
+
+- task: Npm@1
+displayName: 'Run Tests'
+inputs:
+	command: custom
+	workingDir: 'Vefur/testproject-react-app'
+	verbose: false
+	variables: $(CI)
+	customCommand: 'run test'
+
+- task: Npm@1
+displayName: 'Build app'
+inputs:
+	command: custom
+	workingDir: 'Vefur/testproject-react-app'
+	verbose: false
+	customCommand: 'run build'
+
+- task: ArchiveFiles@2
+displayName: 'Archive Vefur/testproject-react-app/build'
+inputs:
+	rootFolderOrFile: 'Vefur/testproject-react-app/build'
+	archiveFile: '$(Build.ArtifactStagingDirectory)/ReactApp.zip'
+
+- task: PublishBuildArtifacts@1
+displayName: 'Publish Artifact: drop'
+inputs:
+	PathtoPublish: '$(Build.ArtifactStagingDirectory)/ReactApp.zip'
